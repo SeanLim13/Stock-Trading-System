@@ -1,38 +1,46 @@
 "use client";
+
 import { useState } from "react";
-import { login } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { login } from "@/lib/api";
+import { useUserStore } from "@/lib/userStore";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
+  const [usernameInput, setUsernameInput] = useState("");
   const [pwd, setPwd] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
 
+  // ← get the setter from your store
+  const setUsername = useUserStore((s) => s.setUsername);
+
   const handleLogin = async () => {
-    const success = await login(username, pwd);
+    const success = await login(usernameInput, pwd);
     if (success) {
-      setMessage("登录成功，正在跳转...");
-      localStorage.setItem("username", username); // 存储用户信息
-      setTimeout(() => router.push("/dashboard"), 1000);
+      // 1. persist to localStorage
+      localStorage.setItem("username", usernameInput);
+      // 2. update your global store
+      setUsername(usernameInput);
+      // 3. navigate
+      router.push("/");
     } else {
-      setMessage("登录失败，请检查用户名或密码");
+      setMessage("Login failed — check credentials");
     }
   };
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">登录</h1>
+      <h1 className="text-xl font-bold mb-4">Login</h1>
       <input
         className="block mb-2 p-2 border"
-        placeholder="用户名"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+        value={usernameInput}
+        onChange={(e) => setUsernameInput(e.target.value)}
       />
       <input
         className="block mb-2 p-2 border"
         type="password"
-        placeholder="密码"
+        placeholder="Password"
         value={pwd}
         onChange={(e) => setPwd(e.target.value)}
       />
@@ -40,9 +48,9 @@ export default function LoginPage() {
         className="px-4 py-2 bg-green-600 text-white"
         onClick={handleLogin}
       >
-        登录
+        Login
       </button>
-      <p className="mt-2 text-red-500">{message}</p>
+      {message && <p className="mt-2 text-red-500">{message}</p>}
     </div>
   );
 }
