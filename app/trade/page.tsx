@@ -12,6 +12,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function TradePage() {
   const username = useUserStore((s) => s.username);
@@ -20,19 +21,23 @@ export default function TradePage() {
   const [price, setPrice] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
+  const [variant, setVariant] = useState<"default" | "destructive">("default");
 
   const handleSubmit = async () => {
     if (!username) {
+      setVariant("destructive");
       setMessage("Please login to trade.");
       return;
     }
     if (!code || !price || !amount) {
+      setVariant("destructive");
       setMessage("All fields are required.");
       return;
     }
     const priceNum = parseFloat(price);
     const amountNum = parseInt(amount, 10);
     if (amountNum % 100 !== 0) {
+      setVariant("destructive");
       setMessage("Amount must be a multiple of 100.");
       return;
     }
@@ -47,29 +52,37 @@ export default function TradePage() {
       );
       switch (status) {
         case 1:
+          setVariant("default");
           setMessage("Order placed (pending).");
           break;
         case 2:
+          setVariant("default");
           setMessage("Trade executed successfully.");
           break;
         case 3:
+          setVariant("destructive");
           setMessage("Invalid order: price out of range.");
           break;
         case 4:
+          setVariant("destructive");
           setMessage("Insufficient balance.");
           break;
         case 5:
+          setVariant("destructive");
           setMessage("Insufficient holdings.");
           break;
         case 0:
+          setVariant("destructive");
           setMessage("Error: invalid user or code.");
           break;
         default:
+          setVariant("destructive");
           setMessage("Unknown error.");
           break;
       }
     } catch (err) {
       console.error(err);
+      setVariant("destructive");
       setMessage("Trade request failed.");
     }
   };
@@ -78,7 +91,7 @@ export default function TradePage() {
     <div className="p-4 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">Stock Trade</h1>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         <Input
           placeholder="Stock Code (e.g. 601398)"
           value={code}
@@ -114,7 +127,11 @@ export default function TradePage() {
           Submit Trade
         </Button>
 
-        {message && <p className="text-sm text-red-400 mt-2">{message}</p>}
+        {message && (
+          <Alert variant={variant} className="mt-2">
+            <AlertDescription>{message}</AlertDescription>
+          </Alert>
+        )}
       </div>
     </div>
   );

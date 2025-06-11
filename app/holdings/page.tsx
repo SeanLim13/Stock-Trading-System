@@ -23,6 +23,7 @@ export default function HoldingsPage() {
   const [holdings, setHoldings] = useState<Holding[]>([]);
   const [market, setMarket] = useState<MarketPrice[]>([]);
   const [countdown, setCountdown] = useState(5);
+  console.log(countdown);
 
   const fetchAll = async () => {
     if (!username) return;
@@ -62,8 +63,7 @@ export default function HoldingsPage() {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-2">My Holdings</h1>
       <p className="text-gray-600 mb-4">
-        Account Balance: <strong>{balance.toFixed(2)}</strong> 元 | Next refresh
-        in: {countdown} sec
+        Account Balance: <strong>{balance.toFixed(2)}</strong> 元
       </p>
 
       <table className="w-full text-sm border border-gray-700">
