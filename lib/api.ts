@@ -28,7 +28,7 @@ export const logout = async (username: string): Promise<boolean> => {
 
 export const getMarketPrices = async () => {
   const res = await api.get("/getMarketPrice");
-  return res.data; // 返回的是数组形式的股票对象
+  return res.data;
 };
 
 export const getStockPrice = async (code: string): Promise<number[]> => {
@@ -64,5 +64,3 @@ export const getTradeRecords = async (username: string) => {
   const res = await api.get(`/getTradeRecord?username=${username}`);
   return res.data;
 };
-
-// 更多函数例如 getMarketPrice、getInventory 等可在此扩展

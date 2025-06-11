@@ -1,4 +1,3 @@
-// src/components/LogoutButton.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -19,8 +18,8 @@ export default function LogoutButton() {
     try {
       const ok = await logout(username);
       if (ok) {
-        clearUser(); // remove from zustand + localStorage
-        router.push("/login"); // back to login
+        clearUser();
+        router.push("/login");
       } else {
         alert("Logout failed—please try again.");
       }

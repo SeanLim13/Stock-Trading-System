@@ -3,19 +3,27 @@
 import { useEffect, useState } from "react";
 import { getTradeRecords } from "@/lib/api";
 import { useUserStore } from "@/lib/userStore";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
 
 type Record = {
   Code: string;
   Amount: number;
-  Direction: number; // 0 = buy, 1 = sell
-  Price: number; // order price
-  KnockPrice: number; // executed price
+  Direction: number;
+  Price: number;
+  KnockPrice: number;
   TradeTime: string;
-  State: number; // 0-5
+  State: number;
 };
 
 export default function RecordsPage() {
-  const username = useUserStore((state) => state.username);
+  const username = useUserStore((s) => s.username);
   const [records, setRecords] = useState<Record[]>([]);
   const [countdown, setCountdown] = useState(5);
 
@@ -28,7 +36,7 @@ export default function RecordsPage() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(() => {
+    const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev === 1) {
           fetchData();
@@ -37,11 +45,11 @@ export default function RecordsPage() {
         return prev - 1;
       });
     }, 1000);
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, [username]);
 
-  const formatDirection = (dir: number) => (dir === 0 ? "Buy" : "Sell");
-  const formatState = (s: number) => {
+  const fmtDir = (d: number) => (d === 0 ? "Buy" : "Sell");
+  const fmtState = (s: number) => {
     switch (s) {
       case 0:
         return "Error";
@@ -65,63 +73,40 @@ export default function RecordsPage() {
       <h1 className="text-2xl font-bold mb-2">Trade History</h1>
       <p className="text-gray-500 mb-4">Refreshing in: {countdown} seconds</p>
 
-      <table className="w-full text-sm border border-gray-700">
-        <thead className="bg-gray-800 text-white">
-          <tr>
-            <th className="border border-gray-700 px-2 py-1 text-left">Time</th>
-            <th className="border border-gray-700 px-2 py-1 text-left">Code</th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Direction
-            </th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Order Price
-            </th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Quantity
-            </th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Executed Price
-            </th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Status
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Time</TableHead>
+            <TableHead>Code</TableHead>
+            <TableHead>Direction</TableHead>
+            <TableHead>Order Price</TableHead>
+            <TableHead>Quantity</TableHead>
+            <TableHead>Executed Price</TableHead>
+            <TableHead>Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {records.length > 0 ? (
             records.map((r, idx) => (
-              <tr
-                key={r.TradeTime + r.Code + idx}
-                className={idx % 2 === 0 ? "bg-gray-900" : "bg-gray-800"}
-              >
-                <td className="border border-gray-700 px-2 py-1">
-                  {r.TradeTime}
-                </td>
-                <td className="border border-gray-700 px-2 py-1">{r.Code}</td>
-                <td className="border border-gray-700 px-2 py-1">
-                  {formatDirection(r.Direction)}
-                </td>
-                <td className="border border-gray-700 px-2 py-1">
-                  {r.Price.toFixed(2)}
-                </td>
-                <td className="border border-gray-700 px-2 py-1">{r.Amount}</td>
-                <td className="border border-gray-700 px-2 py-1">
-                  {r.KnockPrice.toFixed(2)}
-                </td>
-                <td className="border border-gray-700 px-2 py-1">
-                  {formatState(r.State)}
-                </td>
-              </tr>
+              <TableRow key={`${r.TradeTime}-${r.Code}-${idx}`}>
+                <TableCell>{r.TradeTime}</TableCell>
+                <TableCell>{r.Code}</TableCell>
+                <TableCell>{fmtDir(r.Direction)}</TableCell>
+                <TableCell>{r.Price.toFixed(2)}</TableCell>
+                <TableCell>{r.Amount}</TableCell>
+                <TableCell>{r.KnockPrice.toFixed(2)}</TableCell>
+                <TableCell>{fmtState(r.State)}</TableCell>
+              </TableRow>
             ))
           ) : (
-            <tr>
-              <td colSpan={7} className="text-center text-gray-400 py-4">
+            <TableRow>
+              <TableCell colSpan={7} className="text-center">
                 No trade history available.
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           )}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

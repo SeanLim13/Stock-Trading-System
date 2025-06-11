@@ -42,7 +42,6 @@ export default function StockChartPage() {
     return () => clearInterval(timer);
   }, [code]);
 
-  // —————— SAMPLE & FORMAT DATA ——————
   const MAX_POINTS = 100;
   const fullData = prices.map((p, i) => ({ name: i + 1, price: p }));
   const chartData =

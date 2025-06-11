@@ -3,9 +3,18 @@
 import { useState } from "react";
 import { trade } from "@/lib/api";
 import { useUserStore } from "@/lib/userStore";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
-const TradePage = () => {
-  const username = useUserStore((state) => state.username);
+export default function TradePage() {
+  const username = useUserStore((s) => s.username);
   const [code, setCode] = useState("");
   const [direction, setDirection] = useState<"buy" | "sell">("buy");
   const [price, setPrice] = useState("");
@@ -14,18 +23,15 @@ const TradePage = () => {
 
   const handleSubmit = async () => {
     if (!username) {
-      setMessage("You must be logged in to trade.");
+      setMessage("Please login to trade.");
       return;
     }
-
     if (!code || !price || !amount) {
-      setMessage("Please fill in all fields.");
+      setMessage("All fields are required.");
       return;
     }
-
     const priceNum = parseFloat(price);
-    const amountNum = parseInt(amount);
-
+    const amountNum = parseInt(amount, 10);
     if (amountNum % 100 !== 0) {
       setMessage("Amount must be a multiple of 100.");
       return;
@@ -41,70 +47,75 @@ const TradePage = () => {
       );
       switch (status) {
         case 1:
-          setMessage("Order placed successfully (pending execution).");
+          setMessage("Order placed (pending).");
           break;
         case 2:
-          setMessage("Trade executed successfully!");
+          setMessage("Trade executed successfully.");
           break;
         case 3:
-          setMessage("Invalid order (price out of range).");
+          setMessage("Invalid order: price out of range.");
           break;
         case 4:
-          setMessage("Insufficient account balance.");
+          setMessage("Insufficient balance.");
           break;
         case 5:
           setMessage("Insufficient holdings.");
           break;
+        case 0:
+          setMessage("Error: invalid user or code.");
+          break;
         default:
-          setMessage("Trade failed: unknown error.");
+          setMessage("Unknown error.");
           break;
       }
-    } catch (error) {
-      console.error("Trade error:", error);
+    } catch (err) {
+      console.error(err);
       setMessage("Trade request failed.");
     }
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Stock Trade</h1>
-      <div className="space-y-2 max-w-md">
-        <input
-          className="w-full border p-2"
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Stock Trade</h1>
+
+      <div className="space-y-4">
+        <Input
           placeholder="Stock Code (e.g. 601398)"
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
-        <select
-          className="w-full border p-2"
-          value={direction}
-          onChange={(e) => setDirection(e.target.value as "buy" | "sell")}
+
+        <Select
+          defaultValue="buy"
+          onValueChange={(val) => setDirection(val as "buy" | "sell")}
         >
-          <option value="buy">Buy</option>
-          <option value="sell">Sell</option>
-        </select>
-        <input
-          className="w-full border p-2"
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Buy / Sell" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="buy">Buy</SelectItem>
+            <SelectItem value="sell">Sell</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Input
           placeholder="Price (e.g. 4.5)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-        <input
-          className="w-full border p-2"
+
+        <Input
           placeholder="Amount (multiple of 100)"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
-        <button
-          className="bg-blue-600 text-white px-4 py-2"
-          onClick={handleSubmit}
-        >
+
+        <Button onClick={handleSubmit} className="w-full">
           Submit Trade
-        </button>
-        <p className="text-sm text-gray-700 mt-2">{message}</p>
+        </Button>
+
+        {message && <p className="text-sm text-red-400 mt-2">{message}</p>}
       </div>
     </div>
   );
-};
-
-export default TradePage;
+}

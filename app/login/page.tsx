@@ -11,17 +11,13 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const router = useRouter();
 
-  // ← get the setter from your store
   const setUsername = useUserStore((s) => s.setUsername);
 
   const handleLogin = async () => {
     const success = await login(usernameInput, pwd);
     if (success) {
-      // 1. persist to localStorage
       localStorage.setItem("username", usernameInput);
-      // 2. update your global store
       setUsername(usernameInput);
-      // 3. navigate
       router.push("/");
     } else {
       setMessage("Login failed — check credentials");
