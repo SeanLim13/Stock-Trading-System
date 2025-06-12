@@ -26,17 +26,17 @@ export default function LoginPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Login</h1>
+      <h1 className="text-xl font-bold mb-4">登录</h1>
       <input
         className="block mb-2 p-2 border"
-        placeholder="Username"
+        placeholder="用户名"
         value={usernameInput}
         onChange={(e) => setUsernameInput(e.target.value)}
       />
       <input
         className="block mb-2 p-2 border"
         type="password"
-        placeholder="Password"
+        placeholder="密码"
         value={pwd}
         onChange={(e) => setPwd(e.target.value)}
       />
@@ -44,7 +44,7 @@ export default function LoginPage() {
         className="px-4 py-2 bg-green-600 text-white"
         onClick={handleLogin}
       >
-        Login
+        登录
       </button>
       {message && <p className="mt-2 text-red-500">{message}</p>}
     </div>
