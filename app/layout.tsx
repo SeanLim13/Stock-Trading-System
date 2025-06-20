@@ -23,44 +23,58 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="bg-gray-900 text-white min-h-screen">
-        <header className="flex items-center justify-between px-6 py-4 bg-gray-800">
-          <div className="flex items-center space-x-12">
-            <Link href="/" className="text-2xl font-bold hover:text-gray-300">
+      <body className="min-h-screen text-gray-800 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-200 relative overflow-hidden flex flex-col">
+        {/* Blurred Background Blobs */}
+        <div className="absolute top-[-150px] left-[-100px] w-[300px] h-[300px] bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse z-0"></div>
+        <div className="absolute bottom-[-150px] right-[-100px] w-[300px] h-[300px] bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse delay-75 z-0"></div>
+
+        {/* Header */}
+        <header className="relative z-10 px-6 py-4 bg-white/80 shadow-md rounded-b-xl flex items-center justify-between">
+          {/* Left: Title */}
+          <div className="flex-shrink-0">
+            <Link href="/" className="text-2xl font-bold hover:text-gray-700">
               Stock Trading System
             </Link>
-            <nav className="space-x-6">
-              <Link href="/market" className="hover:text-gray-300">
-                Market
-              </Link>
-              {!username && (
-                <>
-                  <Link href="/login" className="hover:text-gray-300">
-                    Login
-                  </Link>
-                  <Link href="/register" className="hover:text-gray-300">
-                    Register
-                  </Link>
-                </>
-              )}
-              {username && (
-                <>
-                  <Link href="/trade" className="hover:text-gray-300">
-                    Trade
-                  </Link>
-                  <Link href="/holdings" className="hover:text-gray-300">
-                    Holdings
-                  </Link>
-                  <Link href="/records" className="hover:text-gray-300">
-                    History
-                  </Link>
-                </>
-              )}
-            </nav>
           </div>
-          <div>{username && <LogoutButton />}</div>
+
+          {/* Center: Navigation (absolute center) */}
+          <nav className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex space-x-8 text-lg">
+            <Link href="/market" className="hover:text-gray-700">
+              Market
+            </Link>
+            {!username && (
+              <>
+                <Link href="/login" className="hover:text-gray-700">
+                  Login
+                </Link>
+                <Link href="/register" className="hover:text-gray-700">
+                  Register
+                </Link>
+              </>
+            )}
+            {username && (
+              <>
+                <Link href="/trade" className="hover:text-gray-700">
+                  Trade
+                </Link>
+                <Link href="/holdings" className="hover:text-gray-700">
+                  Holdings
+                </Link>
+                <Link href="/records" className="hover:text-gray-700">
+                  History
+                </Link>
+              </>
+            )}
+          </nav>
+
+          {/* Right: Logout Button */}
+          <div className="flex-shrink-0">{username && <LogoutButton />}</div>
         </header>
-        <main className="p-6">{children}</main>
+
+        {/* Main Content Centered */}
+        <main className="relative z-10 flex-grow flex items-center justify-center p-6">
+          {children}
+        </main>
       </body>
     </html>
   );

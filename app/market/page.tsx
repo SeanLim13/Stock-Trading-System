@@ -61,7 +61,7 @@ export default function MarketPage() {
   );
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white rounded-lg size-full">
       <h1 className="text-2xl font-bold mb-2">大盘实时行情</h1>
       <p className="text-gray-500 mb-4">下次刷新倒计时：{countdown} 秒</p>
 
@@ -82,7 +82,7 @@ export default function MarketPage() {
       </div>
 
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-black font-medium">
           <TableRow>
             <TableHead>Code</TableHead>
             <TableHead>Name</TableHead>

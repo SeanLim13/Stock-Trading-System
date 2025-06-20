@@ -69,12 +69,12 @@ export default function RecordsPage() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white rounded-lg size-full">
       <h1 className="text-2xl font-bold mb-2">Trade History</h1>
       <p className="text-gray-500 mb-4">Refreshing in: {countdown} seconds</p>
 
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-black font-medium">
           <TableRow>
             <TableHead>Time</TableHead>
             <TableHead>Code</TableHead>

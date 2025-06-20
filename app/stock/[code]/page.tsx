@@ -50,7 +50,7 @@ export default function StockChartPage() {
       : fullData;
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white rounded-md size-full">
       <h1 className="text-xl font-bold mb-2">Stock Code: {code}</h1>
       <p className="text-gray-400 mb-4">Refreshing in: {countdown} seconds</p>
 

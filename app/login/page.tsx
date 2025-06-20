@@ -25,7 +25,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white rounded-lg">
       <h1 className="text-xl font-bold mb-4">登录</h1>
       <input
         className="block mb-2 p-2 border"

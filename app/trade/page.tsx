@@ -88,7 +88,7 @@ export default function TradePage() {
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto">
+    <div className="p-4 max-w-md mx-auto bg-white rounded-lg size-full">
       <h1 className="text-2xl font-bold mb-4">Stock Trade</h1>
 
       <div className="space-y-6">

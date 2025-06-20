@@ -4,6 +4,15 @@ import { useEffect, useState } from "react";
 import { getInventory, getBalance, getMarketPrices } from "@/lib/api";
 import { useUserStore } from "@/lib/userStore";
 
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+
 type Holding = {
   Code: string;
   Amount: number;
@@ -60,69 +69,53 @@ export default function HoldingsPage() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white rounded-lg w-full">
       <h1 className="text-2xl font-bold mb-2">My Holdings</h1>
       <p className="text-gray-600 mb-4">
         Account Balance: <strong>{balance.toFixed(2)}</strong> 元
       </p>
 
-      <table className="w-full text-sm border border-gray-700">
-        <thead className="bg-gray-800 text-white">
-          <tr>
-            <th className="border border-gray-700 px-2 py-1 text-left">Code</th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Amount
-            </th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Avg Cost
-            </th>
-            <th className="border border-gray-700 px-2 py-1 text-left">
-              Current Price
-            </th>
-            <th className="border border-gray-700 px-2 py-1 text-left">P/L</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <TableHeader className="bg-black font-medium">
+          <TableRow>
+            <TableHead>Code</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead>Avg Cost</TableHead>
+            <TableHead>Current Price</TableHead>
+            <TableHead>P / L</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {holdings.length > 0 ? (
-            holdings.map((h, idx) => {
+            holdings.map((h) => {
               const current = getCurrentPrice(h.Code);
               const cost = h.AVG_Cost * h.Amount;
               const value = current ? current * h.Amount : 0;
               const profit = value - cost;
+
               return (
-                <tr
-                  key={h.Code}
-                  className={idx % 2 === 0 ? "bg-gray-900" : "bg-gray-800"}
-                >
-                  <td className="border border-gray-700 px-2 py-1">{h.Code}</td>
-                  <td className="border border-gray-700 px-2 py-1">
-                    {h.Amount}
-                  </td>
-                  <td className="border border-gray-700 px-2 py-1">
-                    {h.AVG_Cost.toFixed(2)}
-                  </td>
-                  <td className="border border-gray-700 px-2 py-1">
-                    {current?.toFixed(2) ?? "N/A"}
-                  </td>
-                  <td
-                    className={`border border-gray-700 px-2 py-1 ${
-                      profit >= 0 ? "text-green-400" : "text-red-400"
-                    }`}
+                <TableRow key={h.Code}>
+                  <TableCell>{h.Code}</TableCell>
+                  <TableCell>{h.Amount}</TableCell>
+                  <TableCell>{h.AVG_Cost.toFixed(2)}</TableCell>
+                  <TableCell>{current?.toFixed(2) ?? "N/A"}</TableCell>
+                  <TableCell
+                    className={profit >= 0 ? "text-green-500" : "text-red-500"}
                   >
                     {profit.toFixed(2)}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })
           ) : (
-            <tr>
-              <td colSpan={5} className="text-center text-gray-400 py-4">
+            <TableRow>
+              <TableCell colSpan={5} className="text-center text-gray-400 py-4">
                 You currently hold no stocks.
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           )}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }
