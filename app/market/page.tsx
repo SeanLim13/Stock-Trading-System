@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { getMarketPrices, getStockPrice } from "@/lib/api";
 import {
   Table,
@@ -116,7 +117,9 @@ export default function MarketPage() {
           <TableBody>
             {filteredMarket.map((stock) => (
               <TableRow key={stock.Code}>
-                <TableCell>{stock.Code}</TableCell>
+                <TableCell className="text-blue-600 hover:underline">
+                  <Link href={`/stock/${stock.Code}`}>{stock.Code}</Link>
+                </TableCell>
                 <TableCell>{stock.Name}</TableCell>
                 <TableCell>{stock.Price.toFixed(2)}</TableCell>
                 <TableCell
