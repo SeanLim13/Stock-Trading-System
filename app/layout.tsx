@@ -33,35 +33,35 @@ export default function RootLayout({
           {/* Left: Title */}
           <div className="flex-shrink-0">
             <Link href="/" className="text-2xl font-bold hover:text-gray-700">
-              Stock Trading System
+              StockTrader
             </Link>
           </div>
 
           {/* Center: Navigation (absolute center) */}
           <nav className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex space-x-8 text-lg">
             <Link href="/market" className="hover:text-gray-700">
-              Market
+              大盘行情
             </Link>
             {!username && (
               <>
                 <Link href="/login" className="hover:text-gray-700">
-                  Login
+                  登录
                 </Link>
                 <Link href="/register" className="hover:text-gray-700">
-                  Register
+                  注册
                 </Link>
               </>
             )}
             {username && (
               <>
                 <Link href="/trade" className="hover:text-gray-700">
-                  Trade
+                  交易股票
                 </Link>
                 <Link href="/holdings" className="hover:text-gray-700">
-                  Holdings
+                  查看持仓
                 </Link>
                 <Link href="/records" className="hover:text-gray-700">
-                  History
+                  交易记录
                 </Link>
               </>
             )}

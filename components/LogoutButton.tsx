@@ -34,7 +34,7 @@ export default function LogoutButton() {
       onClick={handleLogout}
       className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
     >
-      Logout
+      注销
     </button>
   );
 }

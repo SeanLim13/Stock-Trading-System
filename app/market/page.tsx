@@ -84,8 +84,8 @@ export default function MarketPage() {
       <Table>
         <TableHeader className="bg-black font-medium">
           <TableRow>
-            <TableHead>Code</TableHead>
-            <TableHead>Name</TableHead>
+            <TableHead>股票代码</TableHead>
+            <TableHead>股票名称</TableHead>
             <TableHead>最新价格</TableHead>
           </TableRow>
         </TableHeader>
