@@ -93,37 +93,37 @@ export default function TradePage() {
       switch (status) {
         case 1:
           setVariant("default");
-          setMessage("Order placed (pending).");
+          setMessage("委托已提交（待成交）");
           break;
         case 2:
           setVariant("default");
-          setMessage("Trade executed successfully.");
+          setMessage("交易已成功成交");
           break;
         case 3:
           setVariant("destructive");
-          setMessage("Invalid order: price out of range.");
+          setMessage("委托无效：价格超出范围");
           break;
         case 4:
           setVariant("destructive");
-          setMessage("Insufficient balance.");
+          setMessage("余额不足，无法完成交易");
           break;
         case 5:
           setVariant("destructive");
-          setMessage("Insufficient holdings.");
+          setMessage("持仓不足，无法完成交易");
           break;
         case 0:
           setVariant("destructive");
-          setMessage("Error: invalid user or code.");
+          setMessage("错误：无效的用户或股票代码");
           break;
         default:
           setVariant("destructive");
-          setMessage("Unknown error.");
+          setMessage("未知错误，请稍后再试");
           break;
       }
     } catch (err) {
       console.error(err);
       setVariant("destructive");
-      setMessage("Trade request failed.");
+      setMessage("交易请求失败，请检查网络连接");
     }
   };
 
@@ -144,18 +144,18 @@ export default function TradePage() {
 
   return (
     <div className="p-4 max-w-md mx-auto bg-white rounded-lg size-full">
-      <h1 className="text-2xl font-bold mb-4">Stock Trade</h1>
+      <h1 className="text-2xl font-bold mb-4">股票交易</h1>
 
       <div className="space-y-6">
         <Input
-          placeholder="Stock Code (e.g. 601398)"
+          placeholder="股票代码 (例如：601398)"
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
 
         {direction === "buy" && currentPrice !== null && (
           <p className="text-sm text-gray-500 flex items-center">
-            Current Price:
+            最新价格:
             <strong className="ml-1">¥{currentPrice.toFixed(2)}</strong>
             {renderPriceChange()}
           </p>
@@ -169,25 +169,25 @@ export default function TradePage() {
             <SelectValue placeholder="Buy / Sell" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="buy">Buy</SelectItem>
-            <SelectItem value="sell">Sell</SelectItem>
+            <SelectItem value="buy">买入</SelectItem>
+            <SelectItem value="sell">卖出</SelectItem>
           </SelectContent>
         </Select>
 
         <Input
-          placeholder="Price (e.g. 4.5)"
+          placeholder="委托价格 (例如：4.5)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
 
         <Input
-          placeholder="Amount (multiple of 100)"
+          placeholder="股票数量需为 100 的倍数"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
 
         <Button onClick={handleSubmit} className="w-full">
-          Submit Trade
+          提交交易
         </Button>
 
         {message && (

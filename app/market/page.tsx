@@ -109,7 +109,7 @@ export default function MarketPage() {
             <TableRow>
               <TableHead>股票代码</TableHead>
               <TableHead>股票名称</TableHead>
-              <TableHead>最新价格</TableHead>
+              <TableHead>最新价格（元）</TableHead>
               <TableHead>当日涨跌价</TableHead>
               <TableHead>当日涨跌幅</TableHead>
             </TableRow>

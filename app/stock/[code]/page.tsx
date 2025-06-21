@@ -51,8 +51,8 @@ export default function StockChartPage() {
 
   return (
     <div className="p-4 bg-white rounded-md size-full">
-      <h1 className="text-xl font-bold mb-2">Stock Code: {code}</h1>
-      <p className="text-gray-400 mb-4">Refreshing in: {countdown} seconds</p>
+      <h1 className="text-xl font-bold mb-2">股票代码: {code}</h1>
+      <p className="text-gray-400 mb-4">下次刷新倒计时: {countdown} 秒</p>
 
       {chartData.length > 0 ? (
         <ResponsiveContainer width="100%" height={400}>
@@ -80,6 +80,7 @@ export default function StockChartPage() {
             <Line
               type="monotone"
               dataKey="price"
+              name="价格"
               stroke="#2563eb"
               strokeWidth={2}
               dot={false}
@@ -87,7 +88,7 @@ export default function StockChartPage() {
           </LineChart>
         </ResponsiveContainer>
       ) : (
-        <p className="text-gray-500">No historical price data available</p>
+        <p className="text-gray-500">暂无历史价格数据</p>
       )}
     </div>
   );

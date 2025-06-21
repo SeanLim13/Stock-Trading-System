@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getInventory, getBalance, getMarketPrices } from "@/lib/api";
+import Link from "next/link";
 import { useUserStore } from "@/lib/userStore";
 
 import {
@@ -70,19 +71,19 @@ export default function HoldingsPage() {
 
   return (
     <div className="p-4 bg-white rounded-lg w-full">
-      <h1 className="text-2xl font-bold mb-2">My Holdings</h1>
+      <h1 className="text-2xl font-bold mb-2">账户持仓</h1>
       <p className="text-gray-600 mb-4">
-        Account Balance: <strong>{balance.toFixed(2)}</strong> 元
+        账户余额: <strong>{balance.toFixed(2)}</strong> 元
       </p>
 
       <Table>
         <TableHeader className="bg-black font-medium">
           <TableRow>
-            <TableHead>Code</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Avg Cost</TableHead>
-            <TableHead>Current Price</TableHead>
-            <TableHead>P / L</TableHead>
+            <TableHead>股票代码</TableHead>
+            <TableHead>买入数量</TableHead>
+            <TableHead>买入价格（元）</TableHead>
+            <TableHead>实时价格（元）</TableHead>
+            <TableHead>盈亏金额（元）</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -95,7 +96,9 @@ export default function HoldingsPage() {
 
               return (
                 <TableRow key={h.Code}>
-                  <TableCell>{h.Code}</TableCell>
+                  <TableCell className="text-blue-600 hover:underline">
+                    <Link href={`/stock/${h.Code}`}>{h.Code}</Link>
+                  </TableCell>
                   <TableCell>{h.Amount}</TableCell>
                   <TableCell>{h.AVG_Cost.toFixed(2)}</TableCell>
                   <TableCell>{current?.toFixed(2) ?? "N/A"}</TableCell>
@@ -110,7 +113,7 @@ export default function HoldingsPage() {
           ) : (
             <TableRow>
               <TableCell colSpan={5} className="text-center text-gray-400 py-4">
-                You currently hold no stocks.
+                暂无股票
               </TableCell>
             </TableRow>
           )}
