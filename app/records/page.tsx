@@ -100,7 +100,7 @@ export default function RecordsPage() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={7} className="text-center">
+              <TableCell colSpan={7} className="text-center text-gray-400 py-4">
                 No trade history available.
               </TableCell>
             </TableRow>
