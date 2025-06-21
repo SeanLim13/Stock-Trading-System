@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { trade } from "@/lib/api";
+import { useEffect, useState } from "react";
+import { trade, getMarketPrices } from "@/lib/api";
 import { useUserStore } from "@/lib/userStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,12 @@ import {
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
+type MarketPrice = {
+  Code: string;
+  Name: string;
+  Price: number;
+};
+
 export default function TradePage() {
   const username = useUserStore((s) => s.username);
   const [code, setCode] = useState("");
@@ -22,6 +28,40 @@ export default function TradePage() {
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
   const [variant, setVariant] = useState<"default" | "destructive">("default");
+
+  const [market, setMarket] = useState<MarketPrice[]>([]);
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null);
+  const [previousPrice, setPreviousPrice] = useState<number | null>(null);
+
+  // Poll market prices every 5 seconds
+  useEffect(() => {
+    const fetchPrices = async () => {
+      const res = await getMarketPrices();
+      if (Array.isArray(res)) {
+        setMarket(res);
+      }
+    };
+
+    fetchPrices();
+    const interval = setInterval(fetchPrices, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Update current/previous price when code or market changes
+  useEffect(() => {
+    if (!code) {
+      setCurrentPrice(null);
+      setPreviousPrice(null);
+      return;
+    }
+    const stock = market.find((m) => m.Code === code);
+    const newPrice = stock?.Price ?? null;
+
+    if (newPrice !== currentPrice && newPrice !== null) {
+      setPreviousPrice(currentPrice);
+      setCurrentPrice(newPrice);
+    }
+  }, [code, market]);
 
   const handleSubmit = async () => {
     if (!username) {
@@ -87,6 +127,21 @@ export default function TradePage() {
     }
   };
 
+  const priceDiff =
+    currentPrice !== null && previousPrice !== null
+      ? currentPrice - previousPrice
+      : 0;
+
+  const renderPriceChange = () => {
+    if (priceDiff > 0) {
+      return <span className="text-green-500 ml-2">▲</span>;
+    }
+    if (priceDiff < 0) {
+      return <span className="text-red-500 ml-2">▼</span>;
+    }
+    return null;
+  };
+
   return (
     <div className="p-4 max-w-md mx-auto bg-white rounded-lg size-full">
       <h1 className="text-2xl font-bold mb-4">Stock Trade</h1>
@@ -97,6 +152,14 @@ export default function TradePage() {
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
+
+        {direction === "buy" && currentPrice !== null && (
+          <p className="text-sm text-gray-500 flex items-center">
+            Current Price:
+            <strong className="ml-1">¥{currentPrice.toFixed(2)}</strong>
+            {renderPriceChange()}
+          </p>
+        )}
 
         <Select
           defaultValue="buy"
