@@ -153,13 +153,14 @@ export default function TradePage() {
           onChange={(e) => setCode(e.target.value)}
         />
 
-        {direction === "buy" && currentPrice !== null && (
-          <p className="text-sm text-gray-500 flex items-center">
-            最新价格:
-            <strong className="ml-1">¥{currentPrice.toFixed(2)}</strong>
-            {renderPriceChange()}
-          </p>
-        )}
+        {(direction === "buy" || direction === "sell") &&
+          currentPrice !== null && (
+            <p className="text-sm text-gray-500 flex items-center">
+              最新价格:
+              <strong className="ml-1">¥{currentPrice.toFixed(2)}</strong>
+              {renderPriceChange()}
+            </p>
+          )}
 
         <Select
           defaultValue="buy"
