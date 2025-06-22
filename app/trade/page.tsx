@@ -66,19 +66,19 @@ export default function TradePage() {
   const handleSubmit = async () => {
     if (!username) {
       setVariant("destructive");
-      setMessage("Please login to trade.");
+      setMessage("请登录进行交易");
       return;
     }
     if (!code || !price || !amount) {
       setVariant("destructive");
-      setMessage("All fields are required.");
+      setMessage("请填写所有字段");
       return;
     }
     const priceNum = parseFloat(price);
     const amountNum = parseInt(amount, 10);
     if (amountNum % 100 !== 0) {
       setVariant("destructive");
-      setMessage("Amount must be a multiple of 100.");
+      setMessage("股票数量需为 100 的倍数");
       return;
     }
 

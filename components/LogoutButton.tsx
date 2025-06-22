@@ -21,11 +21,11 @@ export default function LogoutButton() {
         clearUser();
         router.push("/login");
       } else {
-        alert("Logout failed—please try again.");
+        alert("注销失败-请重试");
       }
     } catch (err) {
       console.error(err);
-      alert("Error logging out.");
+      alert("注销失败");
     }
   };
 

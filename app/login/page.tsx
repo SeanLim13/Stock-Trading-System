@@ -20,7 +20,7 @@ export default function LoginPage() {
       setUsername(usernameInput);
       router.push("/");
     } else {
-      setMessage("Login failed — check credentials");
+      setMessage("登录失败-检查用户名及密码");
     }
   };
 

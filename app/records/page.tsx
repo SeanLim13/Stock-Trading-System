@@ -91,10 +91,8 @@ export default function RecordsPage() {
             records.map((r, idx) => (
               <TableRow key={`${r.TradeTime}-${r.Code}-${idx}`}>
                 <TableCell>{r.TradeTime}</TableCell>
-                <TableCell>
-                  <TableCell className="text-blue-600 hover:underline">
-                    <Link href={`/stock/${r.Code}`}>{r.Code}</Link>
-                  </TableCell>
+                <TableCell className="text-blue-600 hover:underline">
+                  <Link href={`/stock/${r.Code}`}>{r.Code}</Link>
                 </TableCell>
                 <TableCell>{fmtDir(r.Direction)}</TableCell>
                 <TableCell>{r.Price.toFixed(2)}</TableCell>
