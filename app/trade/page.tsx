@@ -97,7 +97,7 @@ export default function TradePage() {
           break;
         case 2:
           setVariant("default");
-          setMessage("交易已成功成交");
+          setMessage("交易已成功");
           break;
         case 3:
           setVariant("destructive");

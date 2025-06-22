@@ -57,7 +57,7 @@ export default function RecordsPage() {
       case 1:
         return "待处理";
       case 2:
-        return "成交成功";
+        return "交易成功";
       case 3:
         return "订单无效";
       case 4:
